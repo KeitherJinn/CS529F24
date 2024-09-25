@@ -60,4 +60,21 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="glfw3.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="lib\glew32.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="lib\glew32s.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="lib\glfw3_mt.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="lib\glfw3dll.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+  </ItemGroup>
 </Project>
