@@ -6,6 +6,23 @@
 #include <stdexcept>
 #include <functional>
 
+GameWindow::GameWindow(int l, float h, string n) : length(l), height(h), name(n) {
+	initialize();
+}
+
+GLFWwindow* GameWindow::getNativeWindow() const {
+	return window;
+}
+
+void GameWindow::setWindowHints(const function<void()>& hintSetter) {
+	hintSetter();
+}
+
+bool GameWindow::setupGraphicsContext() {
+	glfwMakeContextCurrent(window);
+	return true;
+}
+
 void GameWindow::resizeCallbackWrapper(GLFWwindow* w, int l, int h) {
 	auto* gameWindow = static_cast<GameWindow*>(glfwGetWindowUserPointer(w));
 	if (gameWindow && gameWindow->resizeCallback) {
@@ -46,4 +63,24 @@ void GameWindow::initialize() {
 		cerr << "Failed to initialize GLFW" << endl;
 	}
 	window = glfwCreateWindow(length, height, name.c_str(), nullptr, nullptr);
+}
+
+bool GameWindow::shouldClose() {
+	return glfwWindowShouldClose(window);
+}
+
+void GameWindow::pollEvents() {
+	glfwPollEvents();
+}
+
+void GameWindow::updateWindow() {
+	glfwSwapBuffers(window);
+}
+
+void GameWindow::shutdownWindow() {
+	glfwDestroyWindow(window);
+}
+
+void GameWindow::shutdownLibraries() {
+	glfwTerminate();
 }
