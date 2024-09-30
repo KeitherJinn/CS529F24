@@ -41,3 +41,7 @@ void Renderer::setupCallbacks() {
 void Renderer::frameBufferSizeCallback(GLFWwindow* w, int l, int h) {
 	glViewport(0, 0, l, h);
 }
+
+Triangle Renderer::drawTriangle(Vector3 v1, Vector3 v2, Vector3 v3) {
+	return Triangle(v1, v2, v3);
+}
