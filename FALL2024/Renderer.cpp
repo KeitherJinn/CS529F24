@@ -1,5 +1,8 @@
 #include "Renderer.h"
 #include <stdexcept>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -42,75 +45,90 @@ void Renderer::frameBufferSizeCallback(GLFWwindow* w, int l, int h) {
 	glViewport(0, 0, l, h);
 }
 
-unsigned int Renderer::drawTriangle(Vector3 v1, Vector3 v2, Vector3 v3) {
+void Renderer::genBuffers() {
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+}
+
+void Renderer::drawTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Matrix4 model) {
 	float vertices[] = {
 	v1.x, v1.y, v1.z,
 	v2.x, v2.y, v2.z,
 	v3.x, v3.y, v3.z,
 	};
-	unsigned int vertexShader = initializeVertexShader();
-	unsigned int fragmentShader = initializeFragmentShader();
-	unsigned int shaderProgram = buildShaderProgram(vertexShader, fragmentShader);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	unsigned int VBO, VAO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
+	initializeVertexShader();
+	initializeFragmentShader();
+	buildShaderProgram();
+	genBuffers();
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	return shaderProgram;
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-unsigned int Renderer::initializeVertexShader() {
-	const char* vertexShaderSource = "#version 330 core\n"
+void Renderer::UpdateTriangle(Matrix4 model) {
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glUseProgram(shaderProgram);
+	transformLocModel = glGetUniformLocation(shaderProgram, "ModelMatrix");
+	transformLocView = glGetUniformLocation(shaderProgram, "ViewMatrix");
+	transformLocProjection = glGetUniformLocation(shaderProgram, "ProjectionMatrix");
+	glUniformMatrix4fv(transformLocModel, 1, GL_FALSE, model.getData());
+	glUniformMatrix4fv(transformLocView, 1, GL_FALSE, Matrix4().getData());
+	glUniformMatrix4fv(transformLocProjection, 1, GL_FALSE, Matrix4().getData());
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Renderer::initializeVertexShader() {
+	const char* vertexShaderSource = 
+		"#version 430 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
+		"uniform mat4 ModelMatrix;\n"
+		"uniform mat4 ViewMatrix;\n"
+		"uniform mat4 ProjectionMatrix;\n"
 		"void main()\n"
 		"{\n"
-		"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+		//"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+		"   gl_Position = ModelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 		"}\0";
-	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
 	int  success;
 	char infoLog[512];
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
+	if (!success) {
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
-	return vertexShader;
 }
 
-unsigned int Renderer::initializeFragmentShader() {
-	const char* fragmentShaderSource = "#version 330 core\n"
+void Renderer::initializeFragmentShader() {
+	const char* fragmentShaderSource = 
+		"#version 430 core\n"
 		"out vec4 FragColor;\n"
 		"void main()\n"
 		"{\n"
-		"    FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
+		"    FragColor = vec4(0.5f, 0.0f, 0.0f, 1.0f);\n"
 		"}\0";
-	unsigned int fragmentShader;
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	int success;
 	char infoLog[512];
 	glCompileShader(fragmentShader);
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
+	if (!success) {
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
-	return fragmentShader;
 }
 
-unsigned int Renderer::buildShaderProgram(unsigned int vertexShader, unsigned int fragmentShader) {
-	unsigned int shaderProgram;
+void Renderer::buildShaderProgram() {
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
@@ -122,6 +140,7 @@ unsigned int Renderer::buildShaderProgram(unsigned int vertexShader, unsigned in
 		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
-	return shaderProgram;
+	glUseProgram(shaderProgram);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 }
-

@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <functional>
 
-GameWindow::GameWindow(int l, float h, string n) : length(l), height(h), name(n) {
+GameWindow::GameWindow(int l, int h, string n) : length(l), height(h), name(n) {
 	initialize();
 }
 
@@ -40,22 +40,6 @@ void GameWindow::shutDown() {
 
 void GameWindow::setResizeCallback(function<void(GLFWwindow*, int, int)>callback) {
 	resizeCallback = move(callback);
-}
-
-bool GameWindow::initializeLibraries() {
-	if (!glfwInit()) {
-		cerr << "Failed to initialize GLFW" << endl;
-		return false;
-	}
-	return true;
-}
-
-bool GameWindow::loadGraphicsAPIFunctions() {
-	if (glewInit() != GLEW_OK) {
-		cerr << "Failed to initialize GLEW" << endl;
-		return false;
-	}
-	return true;
 }
 
 void GameWindow::initialize() {

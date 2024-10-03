@@ -9,10 +9,8 @@
 class Matrix4 {
 private:
     float data[4][4];
-
 public:
     Matrix4();
-
     // Multiplication: * Operator Overloads
     Matrix4 operator*(const Matrix4& other);
     Vector3 operator*(const Vector3& vec) const;
@@ -20,7 +18,7 @@ public:
     // Matrix-specific functions
     void updateElement(int row, int col, float value);
     float getElement(int row, int col) const;
-
+    
     // Transformation utilities based on matrix
     // For practicity, I added these in the Matrix API,
     // however, these might be better candidates for a Transform class (think about it)
@@ -30,5 +28,9 @@ public:
     static Matrix4 rotationX(float angle);
     static Matrix4 rotationY(float angle);
     static Matrix4 rotationZ(float angle);
+    static Matrix4 orthographic(float l, float r, float b, float t, float n, float f);
+    static Matrix4 perspective(float fov, float aR, float n, float f);
+    static Matrix4 lookAt(const Vector3& eye, const Vector3 center, const Vector3 up);
+    float* getData();
     // I encourage to implement the Euler Angles formula: Removes the gimball lock problem
 };

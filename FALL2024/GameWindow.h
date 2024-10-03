@@ -15,14 +15,11 @@ private:
 	int height;
 	string name;
 	function<void(GLFWwindow*, int, int)> resizeCallback;
-
-	bool initializeLibraries();
-	bool loadGraphicsAPIFunctions();
 	static void resizeCallbackWrapper(GLFWwindow* w, int l, int h);
 	void shutDown();
 	void initialize();
 public:
-	GameWindow(int l, float h, string n);
+	GameWindow(int l, int h, string n);
 	GLFWwindow* getNativeWindow() const;
 	void setWindowHints(const function<void()>& hintSetter);
 	bool setupGraphicsContext();

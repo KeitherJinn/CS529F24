@@ -1,4 +1,5 @@
 #include "Matrix4.h"
+#include "Vector3.h"
 #include <cmath>
 #include <iostream>
 
@@ -8,8 +9,8 @@ Matrix4::Matrix4()
 {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (i == j) data[i][j] = 1;
-            else  data[i][j] = 0;
+            if (i == j) data[i][j] = 1.0f;
+            else  data[i][j] = 0.0f;
         }
     }
 }
@@ -81,8 +82,6 @@ Matrix4 Matrix4::rotationX(float angle)
     Matrix4 result;
     float cosa = cos(angle);
     float sina = sin(angle);
-    if (cosa < 0.00001) cosa = 0;
-    if (sina < 0.00001) sina = 0;
     result.updateElement(1, 1, cosa);
     result.updateElement(2, 2, cosa);
     result.updateElement(1, 2, -sina);
@@ -95,8 +94,6 @@ Matrix4 Matrix4::rotationY(float angle)
     Matrix4 result;
     float cosa = cos(angle);
     float sina = sin(angle);
-    if (cosa < 0.00001) cosa = 0;
-    if (sina < 0.00001) sina = 0;
     result.updateElement(0, 0, cosa);
     result.updateElement(2, 2, cosa);
     result.updateElement(2, 0, -sina);
@@ -109,11 +106,59 @@ Matrix4 Matrix4::rotationZ(float angle)
     Matrix4 result;
     float cosa = cos(angle);
     float sina = sin(angle);
-    if (cosa < 0.00001) cosa = 0;
-    if (sina < 0.00001) sina = 0;
     result.updateElement(0, 0, cosa);
     result.updateElement(1, 1, cosa);
     result.updateElement(0, 1, -sina);
     result.updateElement(1, 0, sina);
     return result;
+}
+
+Matrix4 Matrix4::orthographic(float l, float r, float b, float t, float n, float f) {
+    Matrix4 res;
+    res.data[0][0] = 2.0f / (r - l);
+    res.data[1][1] = 2.0f / (t - b);
+    res.data[2][2] = -2.0f / (f - n);
+    res.data[0][3] = -(r + l) / (r - l);
+    res.data[1][3] = -(t + b) / (t - b);
+    res.data[2][3] = -(f + n) / (f - n);
+    res.data[3][3] = 1.0f;
+    return res;
+}
+
+Matrix4 Matrix4::perspective(float fov, float aR, float n, float f) {
+    Matrix4 res;
+    float tanHalFov = tan(fov / 2.0f);
+    res.data[0][0] = 1.0f / (aR * tanHalFov);
+    res.data[1][1] = 1.0f / tanHalFov;
+    res.data[2][2] = -(f + n) / (f - n);
+    res.data[2][3] = -(2.0f * f * n) / (f - n);
+    res.data[3][2] = -1.0f;
+    res.data[3][3] = 0.0f;
+    return res;
+}
+
+Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3  center, const Vector3 up) {
+    Vector3 f = (center - eye).normalized();
+    Vector3 s = f.cross(up.normalized());
+    Vector3 u = s.cross(f);
+
+    Matrix4 res;
+    res.data[0][0] = s.x;
+    res.data[1][0] = s.y;
+    res.data[2][0] = s.z;
+    res.data[0][1] = u.x;
+    res.data[1][1] = u.y;
+    res.data[2][1] = u.z;
+    res.data[0][2] = -f.x;
+    res.data[1][2] = -f.y;
+    res.data[2][2] = -f.z;
+    res.data[3][0] = -s.dot(eye);
+    res.data[3][1] = -u.dot(eye);
+    res.data[3][2] = f.dot(eye);
+    res.data[3][3] = -1.0f;
+    return res;
+}
+
+float* Matrix4::getData() {
+    return &data[0][0];
 }
