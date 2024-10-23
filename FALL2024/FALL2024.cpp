@@ -41,11 +41,10 @@ int main() {
             t1.changeModelMatrix(model.rotationY(1 * glfwGetTime()));
             t2.changeModelMatrix(model.rotationY(4 * glfwGetTime()));
             t3.changeModelMatrix(model.rotationY(2 * glfwGetTime()));
+
             t1.update();
             t2.update();
             t3.update();
-
-
 
             renderer.swapBuffers();
         }
