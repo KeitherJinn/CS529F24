@@ -28,6 +28,7 @@ public:
     static Matrix4 rotationX(float angle);
     static Matrix4 rotationY(float angle);
     static Matrix4 rotationZ(float angle);
+    static Matrix4 rotationXYZ(float x, float y, float z); // axis-angle based
     static Matrix4 orthographic(float l, float r, float b, float t, float n, float f);
     static Matrix4 perspective(float fov, float aR, float n, float f);
     static Matrix4 lookAt(const Vector3& eye, const Vector3 center, const Vector3 up);

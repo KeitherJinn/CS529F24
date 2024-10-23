@@ -113,6 +113,10 @@ Matrix4 Matrix4::rotationZ(float angle)
     return result;
 }
 
+Matrix4 Matrix4::rotationXYZ(float x, float y, float z) {
+    return rotationZ(z) * rotationY(y) * rotationX(x);
+}
+
 Matrix4 Matrix4::orthographic(float l, float r, float b, float t, float n, float f) {
     Matrix4 res;
     res.data[0][0] = 2.0f / (r - l);
@@ -137,7 +141,7 @@ Matrix4 Matrix4::perspective(float fov, float aR, float n, float f) {
     return res;
 }
 
-Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3  center, const Vector3 up) {
+Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3 center, const Vector3 up) {
     Vector3 f = (center - eye).normalized();
     Vector3 s = f.cross(up.normalized());
     Vector3 u = s.cross(f);

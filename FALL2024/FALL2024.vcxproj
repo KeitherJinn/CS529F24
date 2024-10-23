@@ -131,17 +131,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DrawTriangle.cpp" />
+    <ClCompile Include="DrawTriangle.h" />
     <ClCompile Include="FALL2024.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="VectorTemplated.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="VectorTemplated.h" />
   </ItemGroup>
