@@ -62,6 +62,8 @@ void Shader::initializeFragmentShader() {
 }
 
 void Shader::buildShaderProgram() {
+	initializeVertexShader();
+	initializeFragmentShader();
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);

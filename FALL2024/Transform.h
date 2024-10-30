@@ -8,18 +8,18 @@ public:
 
     // Position methods
     void setPosition(const Vector3& newPosition);
-    const Vector3& getPosition() const;
+    Vector3 getPosition() const;
 
     // Rotation methods (using Euler angles in radians)
     void setRotation(const Vector3& newRotation);
-    const Vector3& getRotation() const;
+    Vector3 getRotation() const;
 
     // Scale methods
     void setScale(const Vector3& newScale);
-    const Vector3& getScale() const;
+    Vector3 getScale() const;
 
     // Get the model matrix
-    Matrix4 getLocalMatrix();
+    Matrix4 getLocalMatrix() const;
     Matrix4 getInverseLocalMatrix();
 
     // Utility methods

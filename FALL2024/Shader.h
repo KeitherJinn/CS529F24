@@ -13,11 +13,11 @@ public:
 	Shader();
 	~Shader();
 	unsigned int getshaderProgram();
-	void initializeVertexShader();
-	void initializeFragmentShader();
 	void buildShaderProgram();
 	void use();
 private:
+	void initializeVertexShader();
+	void initializeFragmentShader();
 	unsigned int vertexShader, fragmentShader, shaderProgram;
 };
 

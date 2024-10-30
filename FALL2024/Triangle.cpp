@@ -1,32 +1,30 @@
-#include "DrawTriangle.h"
+#include "Triangle.h"
 
-DrawTriangle::DrawTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m) : vertex1(v1), vertex2(v2), vertex3(v3), color1(c1), color2(c2), color3(c3), model(m), shader(Shader()) {
+Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m) : vertex1(v1), vertex2(v2), vertex3(v3), color1(c1), color2(c2), color3(c3), model(m), shader(Shader()) {
 	draw();
 	update();
 	std::cout << "Triangle drawn" << std::endl;
 }
 
-DrawTriangle::~DrawTriangle() {
+Triangle::~Triangle() {
 }
 
-void DrawTriangle::changeModelMatrix(Matrix4 m) {
+void Triangle::changeModelMatrix(Matrix4 m) {
 	model = m;
 }
 
-void DrawTriangle::genBuffers() {
+void Triangle::genBuffers() {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 }
 
-void DrawTriangle::draw() {
+void Triangle::draw() {
 	float vertices[] = {
 		//positions		//colors
 		vertex1.x, vertex1.y, vertex1.z, color1.x, color1.y, color1.z,
 		vertex2.x, vertex2.y, vertex2.z, color2.x, color2.y, color2.z,
 		vertex3.x, vertex3.y, vertex3.z, color3.x, color3.y, color3.z,
 	};
-	shader.initializeVertexShader();
-	shader.initializeFragmentShader();
 	shader.buildShaderProgram();
 	genBuffers();
 	glBindVertexArray(VAO);
@@ -40,7 +38,7 @@ void DrawTriangle::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void DrawTriangle::update() {
+void Triangle::update() {
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	shader.use();

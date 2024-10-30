@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "GameWindow.h"
 #include "Shader.h"
-#include "DrawTriangle.h"
+#include "Triangle.h"
 #include <iostream>
 
 int main() {
@@ -31,9 +31,9 @@ int main() {
         Vector3 c9 = Vector3(0.0f, 1.0f, 0.0f);
         //modelMatrix
         Matrix4 model = Matrix4();
-        DrawTriangle t1 = DrawTriangle(v1, v2, v3, c1, c2, c3, model);
-        DrawTriangle t2 = DrawTriangle(v4, v5, v6, c4, c5, c6, model);
-        DrawTriangle t3 = DrawTriangle(v7, v8, v9, c7, c8, c9, model);
+        Triangle t1 = Triangle(v1, v2, v3, c1, c2, c3, model);
+        Triangle t2 = Triangle(v4, v5, v6, c4, c5, c6, model);
+        Triangle t3 = Triangle(v7, v8, v9, c7, c8, c9, model);
         while (!window.shouldClose()) {
             window.pollEvents();
             renderer.clear(0.2f, 0.3f, 0.3f, 1.0f);

@@ -5,14 +5,15 @@
 #include "Transform.h"
 #include "Shader.h"
 
-class DrawTriangle
+class Triangle
 {
 public:
-	DrawTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m);
-	~DrawTriangle();
+	Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m);
+	~Triangle();
 	void update();
 	void changeModelMatrix(Matrix4 m);
 private:
+	Transform t;
 	Shader shader;
 	void genBuffers();
 	void draw();

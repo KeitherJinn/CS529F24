@@ -131,13 +131,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DrawTriangle.cpp" />
-    <ClCompile Include="DrawTriangle.h" />
+    <ClCompile Include="Triangle.cpp" />
+    <ClCompile Include="Triangle.h" />
     <ClCompile Include="FALL2024.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="VectorTemplated.cpp" />
   </ItemGroup>
