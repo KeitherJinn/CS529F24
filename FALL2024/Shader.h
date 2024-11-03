@@ -20,6 +20,3 @@ private:
 	void initializeFragmentShader();
 	unsigned int vertexShader, fragmentShader, shaderProgram;
 };
-
-
-

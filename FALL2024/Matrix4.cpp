@@ -163,6 +163,6 @@ Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3 center, const Vector3 
     return res;
 }
 
-float* Matrix4::getData() {
+const float* Matrix4::getData() const {
     return &data[0][0];
 }

@@ -8,7 +8,7 @@
 class Triangle
 {
 public:
-	Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m);
+	Triangle(Transform t, Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m);
 	~Triangle();
 	void update();
 	void changeModelMatrix(Matrix4 m);
@@ -17,6 +17,7 @@ private:
 	Shader shader;
 	void genBuffers();
 	void draw();
+	Vector3 toWorldPos(Vector3 v);
 	unsigned int VBO, VAO, transformLocModel, transformLocProjection, transformLocView;
 	int vertexColorLocation;
 	Matrix4 model;

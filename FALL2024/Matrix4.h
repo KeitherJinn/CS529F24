@@ -20,9 +20,6 @@ public:
     float getElement(int row, int col) const;
     
     // Transformation utilities based on matrix
-    // For practicity, I added these in the Matrix API,
-    // however, these might be better candidates for a Transform class (think about it)
-    // ... That's your homework!
     static Matrix4 translation(float tx, float ty, float tz);
     static Matrix4 scale(float sx, float sy, float sz);
     static Matrix4 rotationX(float angle);
@@ -32,6 +29,6 @@ public:
     static Matrix4 orthographic(float l, float r, float b, float t, float n, float f);
     static Matrix4 perspective(float fov, float aR, float n, float f);
     static Matrix4 lookAt(const Vector3& eye, const Vector3 center, const Vector3 up);
-    float* getData();
+    const float* getData() const;
     // I encourage to implement the Euler Angles formula: Removes the gimball lock problem
 };

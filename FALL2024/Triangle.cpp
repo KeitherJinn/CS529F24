@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m) : vertex1(v1), vertex2(v2), vertex3(v3), color1(c1), color2(c2), color3(c3), model(m), shader(Shader()) {
+Triangle::Triangle(Transform transform, Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, Matrix4 m) : t(transform), vertex1(v1), vertex2(v2), vertex3(v3), color1(c1), color2(c2), color3(c3), model(m), shader(Shader()) {
 	draw();
 	update();
 	std::cout << "Triangle drawn" << std::endl;
@@ -13,17 +13,31 @@ void Triangle::changeModelMatrix(Matrix4 m) {
 	model = m;
 }
 
+Vector3 Triangle::toWorldPos(Vector3 v) {
+	v = v + t.getPosition();
+	Matrix4 rotate;
+	rotate = rotate.rotationXYZ(t.getRotation().x, t.getRotation().y, t.getRotation().z);
+	v = rotate * v;
+	v.x = v.x * t.getScale().x;
+	v.y = v.y * t.getScale().y;
+	v.z = v.z * t.getScale().z;
+	return v;
+}
+
 void Triangle::genBuffers() {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 }
 
 void Triangle::draw() {
+	Vector3 v1 = toWorldPos(vertex1);
+	Vector3 v2 = toWorldPos(vertex2);
+	Vector3 v3 = toWorldPos(vertex3);
 	float vertices[] = {
 		//positions		//colors
-		vertex1.x, vertex1.y, vertex1.z, color1.x, color1.y, color1.z,
-		vertex2.x, vertex2.y, vertex2.z, color2.x, color2.y, color2.z,
-		vertex3.x, vertex3.y, vertex3.z, color3.x, color3.y, color3.z,
+		v1.x, v1.y, v1.z, color1.x, color1.y, color1.z,
+		v2.x, v2.y, v2.z, color2.x, color2.y, color2.z,
+		v3.x, v3.y, v3.z, color3.x, color3.y, color3.z,
 	};
 	shader.buildShaderProgram();
 	genBuffers();

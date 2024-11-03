@@ -1,32 +1,30 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <cstring>
+
+#include <glfw3.h>
+#include <string>
 #include <stdexcept>
 #include <functional>
-
-using namespace std;
+#include <iostream>
 
 class GameWindow {
-private:
-	GLFWwindow* window;
-	int length;
-	int height;
-	string name;
-	function<void(GLFWwindow*, int, int)> resizeCallback;
-	static void resizeCallbackWrapper(GLFWwindow* w, int l, int h);
-	void shutDown();
-	void initialize();
 public:
-	GameWindow(int l, int h, string n);
-	GLFWwindow* getNativeWindow() const;
-	void setWindowHints(const function<void()>& hintSetter);
-	bool setupGraphicsContext();
-	void setResizeCallback(function<void(GLFWwindow*, int, int)>callback);
-	bool shouldClose();
-	void pollEvents();
-	void updateWindow();
-	void shutdownWindow();
-	void shutdownLibraries();
+    GameWindow(int width, int height, const std::string title);
+    ~GameWindow();
+    bool shouldClose() const;
+    void pollEvents();
+    GLFWwindow* getNativeWindow() const;
+    void setWindowHints(const std::function<void()>& hintSetter);
+    int getWidth() const;
+    int getHeight() const;
+    void setResizeCallback(std::function<void(GLFWwindow*, int, int)> callback);
+
+private:
+    void initialize();
+    void shutdown();
+    static void resizeCallbackWrapper(GLFWwindow* window, int width, int height);
+    int width;
+    int height;
+    std::string title;
+    GLFWwindow* pWindow;
+    std::function<void(GLFWwindow*, int, int)> resizeCallback;
 };

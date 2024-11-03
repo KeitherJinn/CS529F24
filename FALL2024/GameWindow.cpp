@@ -1,70 +1,67 @@
 #include "GameWindow.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <cstring>
 #include <stdexcept>
-#include <functional>
+#include <iostream>
 
-GameWindow::GameWindow(int l, int h, string n) : length(l), height(h), name(n) {
-	initialize();
+GameWindow::GameWindow(int width, int height, const std::string title) : width(width), height(height), title(title), pWindow(nullptr) {
+    initialize();
 }
 
-GLFWwindow* GameWindow::getNativeWindow() const {
-	return window;
+GameWindow::~GameWindow() {
+    shutdown();
 }
 
-void GameWindow::setWindowHints(const function<void()>& hintSetter) {
-	hintSetter();
-}
-
-bool GameWindow::setupGraphicsContext() {
-	glfwMakeContextCurrent(window);
-	return true;
-}
-
-void GameWindow::resizeCallbackWrapper(GLFWwindow* w, int l, int h) {
-	auto* gameWindow = static_cast<GameWindow*>(glfwGetWindowUserPointer(w));
-	if (gameWindow && gameWindow->resizeCallback) {
-		gameWindow->resizeCallback(w, l, h);
-		cout << "Window size: (" << l << "," << h << ")" << endl;
-	}
-}
-
-void GameWindow::shutDown() {
-	if (window) {
-		glfwDestroyWindow(window);
-	}
-	glfwTerminate();
-}
-
-void GameWindow::setResizeCallback(function<void(GLFWwindow*, int, int)>callback) {
-	resizeCallback = move(callback);
-}
-
-void GameWindow::initialize() {
-	if (!glfwInit()) {
-		cerr << "Failed to initialize GLFW" << endl;
-	}
-	window = glfwCreateWindow(length, height, name.c_str(), nullptr, nullptr);
-}
-
-bool GameWindow::shouldClose() {
-	return glfwWindowShouldClose(window);
+bool GameWindow::shouldClose() const {
+    return glfwWindowShouldClose(pWindow);
 }
 
 void GameWindow::pollEvents() {
-	glfwPollEvents();
+    glfwPollEvents();
 }
 
-void GameWindow::updateWindow() {
-	glfwSwapBuffers(window);
+GLFWwindow* GameWindow::getNativeWindow() const {
+    return pWindow;
 }
 
-void GameWindow::shutdownWindow() {
-	glfwDestroyWindow(window);
+void GameWindow::setWindowHints(const std::function<void()>& hintSetter) {
+    hintSetter();
 }
 
-void GameWindow::shutdownLibraries() {
-	glfwTerminate();
+int GameWindow::getWidth() const {
+    return width;
+}
+
+int GameWindow::getHeight() const {
+    return height;
+}
+
+void GameWindow::setResizeCallback(std::function<void(GLFWwindow*, int, int)> callback) {
+    resizeCallback = std::move(callback);
+    glfwSetFramebufferSizeCallback(pWindow, resizeCallbackWrapper);
+    glfwSetWindowUserPointer(pWindow, this);
+}
+
+void GameWindow::initialize() {
+    if (!glfwInit()) {
+        throw std::runtime_error("Failed to initialize GLFW");
+    }
+    pWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+    if (!pWindow) {
+        glfwTerminate();
+        throw std::runtime_error("Failed to create GLFW window");
+    }
+}
+
+void GameWindow::shutdown() {
+    if (pWindow) {
+        glfwDestroyWindow(pWindow);
+    }
+    glfwTerminate();
+}
+
+void GameWindow::resizeCallbackWrapper(GLFWwindow* window, int width, int height) {
+    auto* gameWindow = static_cast<GameWindow*>(glfwGetWindowUserPointer(window));
+    if (gameWindow && gameWindow->resizeCallback) {
+        gameWindow->resizeCallback(window, width, height);
+        std::cout << "Window size: (" << width << ", " << height << ")" << std::endl;
+    }
 }

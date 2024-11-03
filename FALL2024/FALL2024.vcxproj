@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Triangle.h" />
     <ClCompile Include="FALL2024.cpp" />
@@ -145,8 +146,13 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GeometryBuffer.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="RenderableNode.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Transform.h" />
