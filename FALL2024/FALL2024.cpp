@@ -1,55 +1,75 @@
+#include <iostream>
+#include <memory>
+#include <vector>
 #include "Renderer.h"
 #include "GameWindow.h"
+#include "SceneGraph.h"
+#include "RenderableNode.h"
+#include "Mesh.h"
+#include "Material.h"
 #include "Shader.h"
-#include "Triangle.h"
-#include "Transform.h"
-#include <iostream>
+#include "Vector3.h"
+#include "Matrix4.h"
+#include "TrianglePrimitive.h"
 
 int main() {
     try {
-        GameWindow window(800, 600, "Window");
+        // Create window and renderer
+        GameWindow window(800, 600, "Triangle Rotation Test");
         Renderer renderer(window);
-        //vertex pos of triangles
-        Vector3 v1 = Vector3(0.2f, -0.2f, 0.0f);
-        Vector3 v2 = Vector3(-0.2f, -0.2f, 0.0f);
-        Vector3 v3 = Vector3(0.0f, 0.2f, 0.0f);
-        //transform of triangles
-        Transform t1;
-        t1.setPosition(Vector3(0.0f, 0.0f, 0.0f));
-        Transform t2;
-        t2.setPosition(Vector3(1.0f, 0.0f, 0.0f));
-        Transform t3;
-        t3.setPosition(Vector3(0.5f, 0.0f, 0.0f));
-        //vertex color of triangle 1
-        Vector3 c1 = Vector3(1.0f, 0.0f, 0.0f);
-        Vector3 c2 = Vector3(1.0f, 0.0f, 0.0f);
-        Vector3 c3 = Vector3(1.0f, 0.0f, 0.0f);
-        //vertex color of triangle 2
-        Vector3 c4 = Vector3(0.0f, 0.0f, 1.0f);
-        Vector3 c5 = Vector3(0.0f, 0.0f, 1.0f);
-        Vector3 c6 = Vector3(0.0f, 0.0f, 1.0f);
-        //vertex color of triangle 3
-        Vector3 c7 = Vector3(0.0f, 1.0f, 0.0f);
-        Vector3 c8 = Vector3(0.0f, 1.0f, 0.0f);
-        Vector3 c9 = Vector3(0.0f, 1.0f, 0.0f);
-        //modelMatrix
-        Matrix4 model = Matrix4();
-        Triangle tr1 = Triangle(t1, v1, v2, v3, c1, c2, c3, model);
-        Triangle tr2 = Triangle(t2, v1, v2, v3, c4, c5, c6, model);
-        Triangle tr3 = Triangle(t3, v1, v2, v3, c7, c8, c9, model);
-        while (!window.shouldClose()) {
-            window.pollEvents();
-            renderer.clear(0.2f, 0.3f, 0.3f, 1.0f);
-            // Render your 3D scene here
-            tr1.changeModelMatrix(model.rotationY(1 * glfwGetTime()));
-            tr2.changeModelMatrix(model.rotationY(4 * glfwGetTime()));
-            tr3.changeModelMatrix(model.rotationY(2 * glfwGetTime()));
 
-            tr1.update();
-            tr2.update();
-            tr3.update();
+        // Create scene graph
+        SceneGraph sceneGraph;
+
+        // Create 3 triangles in different positions
+        auto triangle1 = std::make_shared<TrianglePrimitive>("RedTriangle", &renderer);
+        triangle1->setColor(Vector3(1.0f, 0.0f, 0.0f));
+        triangle1->setLocalPosition(Vector3(-1.0f, 0.0f, 0.0f));
+        triangle1->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+        sceneGraph.addNode(triangle1);
+
+        auto triangle2 = std::make_shared<TrianglePrimitive>("GreenTriangle", &renderer);
+        triangle2->setColor(Vector3(0.0f, 1.0f, 0.0f));
+        triangle2->setLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
+        triangle2->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+        sceneGraph.addNode(triangle2);
+
+        auto triangle3 = std::make_shared<TrianglePrimitive>("BlueTriangle", &renderer);
+        triangle3->setColor(Vector3(0.0f, 0.0f, 1.0f));
+        triangle3->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+        triangle3->setLocalPosition(Vector3(0.5f, 0.0f, 0.0f));
+        sceneGraph.addNode(triangle3);
+
+        // Set up camera (view and projection matrices)
+        Vector3 cameraPos(0.0f, 0.0f, 2.0);
+        Vector3 cameraTarget = cameraPos + Vector3(0.0f, 0.0f, -1.0f);
+        Vector3 upVector(0.0f, 1.0f, 0.0f);
+        Matrix4 viewMatrix = Matrix4::lookAt(cameraPos, cameraTarget, upVector);
+        float aspectRatio = static_cast<float>(window.getWidth()) / window.getHeight();
+        Matrix4 projectionMatrix = Matrix4::perspective(45.0f * 3.14159f / 180.0f, aspectRatio, 0.1f, 100.0f);
+
+        // Main loop
+        float rotationAngle = 0.0f;
+        float deltaTime = 1.0f / 60.0f; // Assume 60 FPS
+        while (!window.shouldClose()) {
+            renderer.clear(0.2f, 0.3f, 0.3f, 1.0f);
+
+            // Update rotation for the triangle node
+            rotationAngle += 1.0f * deltaTime * 0.05;
+            sceneGraph.setRootRotation(Vector3(0.0f, rotationAngle, 0.0f));
+            sceneGraph.update(deltaTime);
+
+            // Draw scene
+            triangle1->localToWorldSpace();
+            triangle2->localToWorldSpace();
+            triangle3->localToWorldSpace();
+            sceneGraph.draw(viewMatrix, projectionMatrix);
+            triangle1->worldToLocalSpace();
+            triangle2->worldToLocalSpace();
+            triangle3->worldToLocalSpace();
 
             renderer.swapBuffers();
+            window.pollEvents();
         }
     }
     catch (const std::exception& e) {

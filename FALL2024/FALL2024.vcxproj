@@ -131,9 +131,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GeometryBuffer.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Triangle.cpp" />
-    <ClCompile Include="Triangle.h" />
+    <ClCompile Include="RenderableNode.cpp" />
+    <ClCompile Include="SceneGraph.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TrianglePrimitive.cpp" />
+    <ClCompile Include="TrianglePrimitive.h" />
     <ClCompile Include="FALL2024.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Matrix4.cpp" />
@@ -154,7 +160,9 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="RenderableNode.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="VectorTemplated.h" />
