@@ -30,11 +30,9 @@ private:
             // Update all children
             Node::update(deltaTime);
         }
-
     };
 
     std::shared_ptr<RootNode> root;  // Root node of the scene graph
-
     void drawNode(const std::shared_ptr<Node>& node, const Matrix4& view, const Matrix4& projection) const;
 
 public:
@@ -68,7 +66,4 @@ public:
     void setRootPosition(const Vector3& position) { root->setLocalPosition(position); }
     void setRootRotation(const Vector3& rotation) { root->setLocalRotation(rotation); }
     void setRootScale(const Vector3& scale) { root->setLocalScale(scale); }
-
-    // Get the root node's world matrix
-    //const Matrix4& getRootWorldMatrix() const { return root->getWorldMatrix(); }
 };

@@ -1,9 +1,7 @@
 #include "TrianglePrimitive.h"
 #include "Shader.h"
 
-TrianglePrimitive::TrianglePrimitive(const std::string name, Renderer* renderer)
-    : RenderableNode(name, nullptr, nullptr, renderer), color(Vector3(0.0f, 0.0f, 0.0f))
-{
+TrianglePrimitive::TrianglePrimitive(const std::string name, Renderer* renderer) : RenderableNode(name, nullptr, nullptr, renderer), color(Vector3(0.0f, 0.0f, 0.0f)) {
     createMesh();
     createMaterial();
 }

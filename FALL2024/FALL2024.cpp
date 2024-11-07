@@ -47,15 +47,15 @@ int main() {
         Matrix4 viewMatrix = Matrix4::lookAt(cameraPos, cameraTarget, upVector);
         float aspectRatio = static_cast<float>(window.getWidth()) / window.getHeight();
         Matrix4 projectionMatrix = Matrix4::perspective(45.0f * 3.14159f / 180.0f, aspectRatio, 0.1f, 100.0f);
-
+        float deltaTime = 0.0f;
         // Main loop
         float rotationAngle = 0.0f;
-        float deltaTime = 1.0f / 60.0f; // Assume 60 FPS
         while (!window.shouldClose()) {
+            deltaTime = glfwGetTime() - deltaTime;
             renderer.clear(0.2f, 0.3f, 0.3f, 1.0f);
 
             // Update rotation for the triangle node
-            rotationAngle += 1.0f * deltaTime * 0.05;
+            rotationAngle += 1.0f * deltaTime;
             sceneGraph.setRootRotation(Vector3(0.0f, rotationAngle, 0.0f));
             sceneGraph.update(deltaTime);
 

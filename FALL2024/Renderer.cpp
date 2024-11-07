@@ -71,8 +71,7 @@ void Renderer::initialize() {
     glfwMakeContextCurrent(pWindow.getNativeWindow());
 
     if (glewInit() != GLEW_OK) {
-        throw std::runtime_error("Failed to initialize GLEW");
-    }
+        throw std::runtime_error("Failed to initialize GLEW");    }
 
     // Enable debug
     glEnable(GL_DEBUG_OUTPUT);
