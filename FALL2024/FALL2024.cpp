@@ -24,24 +24,25 @@ int main() {
         // Create 3 triangles in different positions
         auto triangle1 = std::make_shared<TrianglePrimitive>("RedTriangle", &renderer);
         triangle1->setColor(Vector3(1.0f, 0.0f, 0.0f));
-        triangle1->setLocalPosition(Vector3(-1.0f, 0.0f, 0.0f));
-        triangle1->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+        triangle1->setLocalPosition(Vector3(-4.0f, 0.0f, 0.0f));
+        triangle1->setLocalScale(Vector3(0.2f, 0.2f, 0.2f));
         sceneGraph.addNode(triangle1);
 
         auto triangle2 = std::make_shared<TrianglePrimitive>("GreenTriangle", &renderer);
         triangle2->setColor(Vector3(0.0f, 1.0f, 0.0f));
         triangle2->setLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
-        triangle2->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+        triangle2->setLocalScale(Vector3(0.2f, 0.2f, 0.2f));
         sceneGraph.addNode(triangle2);
 
         auto triangle3 = std::make_shared<TrianglePrimitive>("BlueTriangle", &renderer);
         triangle3->setColor(Vector3(0.0f, 0.0f, 1.0f));
-        triangle3->setLocalScale(Vector3(0.5f, 0.5f, 0.5f));
-        triangle3->setLocalPosition(Vector3(0.5f, 0.0f, 0.0f));
+        triangle3->setLocalScale(Vector3(0.2f, 0.2f, 0.2f));
+        triangle3->setLocalPosition(Vector3(2.0f, 0.0f, 0.0f));
+        triangle3->setLocalRotation(Vector3(0.0f, 0.0f, 0.0f));
         sceneGraph.addNode(triangle3);
 
         // Set up camera (view and projection matrices)
-        Vector3 cameraPos(0.0f, 0.0f, 2.0);
+        Vector3 cameraPos(0.0f, 0.0f, 2.0f);
         Vector3 cameraTarget = cameraPos + Vector3(0.0f, 0.0f, -1.0f);
         Vector3 upVector(0.0f, 1.0f, 0.0f);
         Matrix4 viewMatrix = Matrix4::lookAt(cameraPos, cameraTarget, upVector);
@@ -51,11 +52,11 @@ int main() {
         // Main loop
         float rotationAngle = 0.0f;
         while (!window.shouldClose()) {
-            deltaTime = glfwGetTime() - deltaTime;
+            deltaTime = glfwGetTime();
             renderer.clear(0.2f, 0.3f, 0.3f, 1.0f);
 
             // Update rotation for the triangle node
-            rotationAngle += 1.0f * deltaTime;
+            rotationAngle = 1.0f * deltaTime;
             sceneGraph.setRootRotation(Vector3(0.0f, rotationAngle, 0.0f));
             sceneGraph.update(deltaTime);
 

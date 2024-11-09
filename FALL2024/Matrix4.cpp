@@ -1,42 +1,55 @@
 #include "Matrix4.h"
-#include "Vector3.h"
-#include <cmath>
-#include <iostream>
-
-using namespace std;
 
 Matrix4::Matrix4()
 {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (i == j) data[i][j] = 1.0f;
-            else  data[i][j] = 0.0f;
+    // Initialize as identity matrix
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            data[i][j] = (i == j) ? 1.0f : 0.0f;
         }
     }
 }
 
+Matrix4 Matrix4::identity()
+{
+    Matrix4 identity;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            identity.data[i][j] = (i == j) ? 1.0f : 0.0f;
+        }
+    }
+    return identity;
+}
+
 void Matrix4::updateElement(int row, int col, float value)
 {
+    if (row < 0 || row >= 4 || col < 0 || col >= 4) {
+        throw std::out_of_range("Matrix indices out of range");
+    }
     data[row][col] = value;
 }
 
 float Matrix4::getElement(int row, int col) const
 {
+    if (row < 0 || row >= 4 || col < 0 || col >= 4) {
+        throw std::out_of_range("Matrix indices out of range");
+    }
     return data[row][col];
+}
+
+const float* Matrix4::getData() const
+{
+    return &data[0][0];
 }
 
 Matrix4 Matrix4::operator*(const Matrix4& other)
 {
     Matrix4 result;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            result.updateElement(i, j, 0);
-        }
-    }
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            for (int k = 0; k < 4; k++) {
-                result.data[i][j] += data[i][k] * other.data[k][j];
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            result.data[i][j] = 0;
+            for (int k = 0; k < 4; ++k) {
+                result.data[i][j] += data[k][i] * other.data[j][k];
             }
         }
     }
@@ -45,124 +58,135 @@ Matrix4 Matrix4::operator*(const Matrix4& other)
 
 Vector3 Matrix4::operator*(const Vector3& vec) const
 {
-    float x = 0, y = 0, z = 0;
-    float temp[4][1] = { vec.x,vec.y,vec.z,1 };
-    float temp1[4][1] = { 0,0,0,0 };
-    for (int i = 0; i < 4; i++) {
-        for (int k = 0; k < 4; k++) {
-            temp1[i][0] += data[i][k] * temp[k][0];
-        }
+    float x = vec.x * data[0][0] + vec.y * data[1][0] + vec.z * data[2][0] + data[3][0];
+    float y = vec.x * data[0][1] + vec.y * data[1][1] + vec.z * data[2][1] + data[3][1];
+    float z = vec.x * data[0][2] + vec.y * data[1][2] + vec.z * data[2][2] + data[3][2];
+    float w = vec.x * data[0][3] + vec.y * data[1][3] + vec.z * data[2][3] + data[3][3];
+
+
+    // Perform perspective division
+    if (w != 0) {
+        x /= w;
+        y /= w;
+        z /= w;
     }
-    x = temp1[0][0];
-    y = temp1[1][0];
-    z = temp1[2][0];
+
     return Vector3(x, y, z);
 }
 
 Matrix4 Matrix4::translation(float tx, float ty, float tz)
 {
     Matrix4 result;
-    result.updateElement(0, 3, tx);
-    result.updateElement(1, 3, ty);
-    result.updateElement(2, 3, tz);
+    result.data[3][0] = tx;
+    result.data[3][1] = ty;
+    result.data[3][2] = tz;
     return result;
 }
 
 Matrix4 Matrix4::scale(float sx, float sy, float sz)
 {
     Matrix4 result;
-    result.updateElement(0, 0, sx);
-    result.updateElement(1, 1, sy);
-    result.updateElement(2, 2, sz);
+    result.data[0][0] = sx;
+    result.data[1][1] = sy;
+    result.data[2][2] = sz;
     return result;
 }
 
 Matrix4 Matrix4::rotationX(float angle)
 {
+    float c = std::cos(angle);
+    float s = std::sin(angle);
     Matrix4 result;
-    float cosa = cos(angle);
-    float sina = sin(angle);
-    result.updateElement(1, 1, cosa);
-    result.updateElement(2, 2, cosa);
-    result.updateElement(1, 2, -sina);
-    result.updateElement(2, 1, sina);
+    result.data[1][1] = c;
+    result.data[1][2] = -s;
+    result.data[2][1] = s;
+    result.data[2][2] = c;
     return result;
 }
 
 Matrix4 Matrix4::rotationY(float angle)
 {
+    float c = std::cos(angle);
+    float s = std::sin(angle);
     Matrix4 result;
-    float cosa = cos(angle);
-    float sina = sin(angle);
-    result.updateElement(0, 0, cosa);
-    result.updateElement(2, 2, cosa);
-    result.updateElement(2, 0, -sina);
-    result.updateElement(0, 2, sina);
+    result.data[0][0] = c;
+    result.data[2][0] = -s;
+    result.data[0][2] = s;
+    result.data[2][2] = c;
     return result;
 }
 
 Matrix4 Matrix4::rotationZ(float angle)
 {
+    float c = std::cos(angle);
+    float s = std::sin(angle);
     Matrix4 result;
-    float cosa = cos(angle);
-    float sina = sin(angle);
-    result.updateElement(0, 0, cosa);
-    result.updateElement(1, 1, cosa);
-    result.updateElement(0, 1, -sina);
-    result.updateElement(1, 0, sina);
+    result.data[0][0] = c;
+    result.data[1][0] = s;
+    result.data[0][1] = -s;
+    result.data[1][1] = c;
     return result;
 }
 
-Matrix4 Matrix4::rotationXYZ(float x, float y, float z) {
+Matrix4 Matrix4::rotationXYZ(float x, float y, float z)
+{
     return rotationZ(z) * rotationY(y) * rotationX(x);
 }
 
-Matrix4 Matrix4::orthographic(float l, float r, float b, float t, float n, float f) {
-    Matrix4 res;
-    res.data[0][0] = 2.0f / (r - l);
-    res.data[1][1] = 2.0f / (t - b);
-    res.data[2][2] = -2.0f / (f - n);
-    res.data[0][3] = -(r + l) / (r - l);
-    res.data[1][3] = -(t + b) / (t - b);
-    res.data[2][3] = -(f + n) / (f - n);
-    res.data[3][3] = 1.0f;
-    return res;
+Matrix4 Matrix4::orthographic(float left, float right, float bottom, float top, float near, float far)
+{
+    Matrix4 result;
+    result.data[0][0] = 2.0f / (right - left);
+    result.data[1][1] = 2.0f / (top - bottom);
+    result.data[2][2] = -2.0f / (far - near);
+    result.data[0][3] = -(right + left) / (right - left);
+    result.data[1][3] = -(top + bottom) / (top - bottom);
+    result.data[2][3] = -(far + near) / (far - near);
+    result.data[3][3] = 1.0f;
+    return result;
 }
 
-Matrix4 Matrix4::perspective(float fov, float aR, float n, float f) {
-    Matrix4 res;
-    float tanHalFov = tan(fov / 2.0f);
-    res.data[0][0] = 1.0f / (aR * tanHalFov);
-    res.data[1][1] = 1.0f / tanHalFov;
-    res.data[2][2] = -(f + n) / (f - n);
-    res.data[2][3] = -(2.0f * f * n) / (f - n);
-    res.data[3][2] = -1.0f;
-    res.data[3][3] = 0.0f;
-    return res;
+Matrix4 Matrix4::perspective(float fov, float aspectRatio, float near, float far)
+{
+    Matrix4 result;
+    float tanHalfFov = std::tan(fov / 2.0f);
+
+    result.data[0][0] = 1.0f / (aspectRatio * tanHalfFov);
+    result.data[1][1] = 1.0f / tanHalfFov;
+    result.data[2][2] = -(far + near) / (far - near);
+    result.data[2][3] = -1.0f;
+    result.data[3][2] = -(2.0f * far * near) / (far - near);
+    result.data[3][3] = 0.0f;
+
+    return result;
 }
 
-Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3 center, const Vector3 up) {
+Matrix4 Matrix4::lookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
+{
     Vector3 f = (center - eye).normalized();
     Vector3 s = f.cross(up.normalized());
     Vector3 u = s.cross(f);
 
-    Matrix4 res;
-    res.data[0][0] = s.x;
-    res.data[1][0] = s.y;
-    res.data[2][0] = s.z;
-    res.data[0][1] = u.x;
-    res.data[1][1] = u.y;
-    res.data[2][1] = u.z;
-    res.data[0][2] = -f.x;
-    res.data[1][2] = -f.y;
-    res.data[2][2] = -f.z;
-    res.data[3][0] = -s.dot(eye);
-    res.data[3][1] = -u.dot(eye);
-    res.data[3][2] = f.dot(eye);
-    res.data[3][3] = -1.0f;
-    return res;
-}
+    Matrix4 result;
+    result.data[0][0] = s.x;
+    result.data[0][1] = u.x;
+    result.data[0][2] = -f.x;
+    result.data[0][3] = 0.0f;
 
-const float* Matrix4::getData() const {
-    return &data[0][0];
+    result.data[1][0] = s.y;
+    result.data[1][1] = u.y;
+    result.data[1][2] = -f.y;
+    result.data[1][3] = 0.0f;
+
+    result.data[2][0] = s.z;
+    result.data[2][1] = u.z;
+    result.data[2][2] = -f.z;
+    result.data[2][3] = 0.0f;
+
+    result.data[3][0] = -s.dot(eye);
+    result.data[3][1] = -u.dot(eye);
+    result.data[3][2] = f.dot(eye);
+    result.data[3][3] = 1.0f;
+
+    return result;
 }

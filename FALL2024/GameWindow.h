@@ -1,3 +1,5 @@
+// GameWindow - version 2
+
 #pragma once
 
 #include <glfw3.h>
