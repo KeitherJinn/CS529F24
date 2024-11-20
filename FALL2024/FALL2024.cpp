@@ -52,7 +52,7 @@ int main() {
         c.setLocalPosition(cameraPos);
         c.setTarget(cameraTarget);
         float aspectRatio = static_cast<float>(window.getWidth()) / window.getHeight();
-        Matrix4 projectionMatrix = Matrix4::perspective(45.0f * 3.14159f / 180.0f, aspectRatio, 0.1f, 100.0f);
+        c.setProjectionMatrix(aspectRatio);
         float deltaTime = 0.0f;
         float currentFrame = 0.0f;
         float lastFrame = 0.0f;
@@ -70,13 +70,13 @@ int main() {
             renderer.clear(0.2f, 0.3f, 0.3f, 1.0f);
 
             if (input.isKeyHeld(A_RIGHT))
-                positionX += 1.0f * deltaTime;
+                positionX += 2.0f * deltaTime;
             if (input.isKeyHeld(A_LEFT))
-                positionX -= 1.0f * deltaTime;
+                positionX -= 2.0f * deltaTime;
             if (input.isKeyHeld(A_UP))
-                positionY += 1.0f * deltaTime;
+                positionY += 2.0f * deltaTime;
             if (input.isKeyHeld(A_DOWN))
-                positionY -= 1.0f * deltaTime;
+                positionY -= 2.0f * deltaTime;
 
             // Update rotation for the triangle node
             rotationAngle += 1.0f * deltaTime;
@@ -88,7 +88,7 @@ int main() {
             triangle1->localToWorldSpace();
             triangle2->localToWorldSpace();
             triangle3->localToWorldSpace();
-            sceneGraph.draw(c.getViewMatrix(), projectionMatrix);
+            sceneGraph.draw(c.getViewMatrix(), c.getProjectionMatrix());
             triangle1->worldToLocalSpace();
             triangle2->worldToLocalSpace();
             triangle3->worldToLocalSpace();

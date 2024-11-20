@@ -9,8 +9,11 @@ public:
 	Camera(string name = "camera", Vector3 t = Vector3(0.0f, 0.0f, 0.0f));
 
 	void setTarget(Vector3 t);
+	void setProjectionMatrix(float aspectRatio);
 	Matrix4 getViewMatrix() const;
+	Matrix4 getProjectionMatrix() const;
 protected:
 	Vector3 target;
 	Matrix4 viewMatrix;
+	Matrix4 projectionMatrix;
 };
