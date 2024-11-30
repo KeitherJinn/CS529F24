@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FramerateController.cpp" />
     <ClCompile Include="GeometryBuffer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="FramerateController.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GeometryBuffer.h" />
