@@ -54,8 +54,7 @@ int main() {
         float aspectRatio = static_cast<float>(window.getWidth()) / window.getHeight();
         c.setProjectionMatrix(aspectRatio);
         float deltaTime = 0.0f;
-        float currentFrame = 0.0f;
-        float lastFrame = 0.0f;
+        float currentFrame = 0.0f, lastFrame = 0.0f;
         float positionX = 0.0f;
         float positionY = 0.0f;
         // Main loop
