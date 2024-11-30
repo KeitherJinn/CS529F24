@@ -55,8 +55,7 @@ int main() {
         c.setProjectionMatrix(aspectRatio);
         float deltaTime = 0.0f;
         float currentFrame = 0.0f, lastFrame = 0.0f;
-        float positionX = 0.0f;
-        float positionY = 0.0f;
+        float positionX = 0.0f, positionY = 0.0f;
         // Main loop
         float rotationAngle = 0.0f;
         while (!window.shouldClose()) {
