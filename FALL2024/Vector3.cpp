@@ -2,14 +2,14 @@
 
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 
 Vector3 Vector3::operator+(const Vector3& other) const
 {
     return Vector3(x + other.x, y + other.y, z + other.z);
 }
 
-Vector3 Vector3::operator-(const Vector3& other) const {
+Vector3 Vector3::operator-(const Vector3& other) const
+{
     return Vector3(x - other.x, y - other.y, z - other.z);
 }
 
@@ -18,6 +18,7 @@ Vector3 Vector3::operator*(float scalar) const
     return Vector3(x * scalar, y * scalar, z * scalar);
 }
 
+// Component-wise multiplication
 Vector3 Vector3::operator*(const Vector3& other) const
 {
     return Vector3(x * other.x, y * other.y, z * other.z);
@@ -30,25 +31,31 @@ float Vector3::dot(const Vector3& other) const
 
 float Vector3::magnitude() const
 {
-    return x * x + y * y + z * z;
+    return std::sqrt(x * x + y * y + z * z);
 }
 
 float Vector3::magnitudSquared() const
 {
-    return sqrt(x * x + y * y + z * z);
+    return dot(*this);
 }
 
 Vector3 Vector3::normalized() const
 {
-    float magnitudeSqrt = magnitudSquared();
-    return Vector3(x / magnitudeSqrt, y / magnitudeSqrt, z / magnitudeSqrt);
+    float mag = magnitude();
+    if (mag == 0) throw std::runtime_error("Cannot normalize zero vector");
+    return Vector3(x / mag, y / mag, z / mag);
 }
 
 Vector3 Vector3::cross(const Vector3& other) const
 {
-    return Vector3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
+    return Vector3(
+        y * other.z - z * other.y,
+        z * other.x - x * other.z,
+        x * other.y - y * other.x
+    );
 }
 
+// Compute reciprocal of vector components with robust handling of zeros
 Vector3 Vector3::reciprocal() const
 {
     const float largeNumber = 1e30f; // A very large number to represent "infinity"

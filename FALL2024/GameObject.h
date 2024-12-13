@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "EventListener.h"
 #include "RectanglePrimitive.h"
 #include "CollisionEvent.h"
@@ -8,8 +9,8 @@
 class GameObject : public RectanglePrimitive
 {
 public:
-    GameObject(const std::string name, Renderer* renderer)
-        : RectanglePrimitive(name, renderer) {
+	GameObject(const std::string name, Renderer* renderer)
+		: RectanglePrimitive(name, renderer) {
 
         // Register GameObject in the list of collision listeners
         collisionListener = new CollisionListener(this);
@@ -18,7 +19,7 @@ public:
         collisionListener->setCallback([this](RenderableNode* self, RenderableNode* other) {
             std::cout << "Collision beteween " << self->getName() << " and " << other->getName() << std::endl;
             });
-    }
+	}
 
     ~GameObject() {
         delete collisionListener;
@@ -29,6 +30,8 @@ public:
         RenderableNode::update(deltaTime);
     }
 
+
 private:
-    CollisionListener* collisionListener;
+	CollisionListener* collisionListener;
+
 };

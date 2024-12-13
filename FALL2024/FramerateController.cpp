@@ -3,6 +3,9 @@
 
 #define MILLISECOND 1000
 
+
+
+
 FramerateController* FramerateController::instance = nullptr;
 
 FramerateController* FramerateController::GetInstance()

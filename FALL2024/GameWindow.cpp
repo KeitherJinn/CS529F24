@@ -2,7 +2,8 @@
 #include <stdexcept>
 #include <iostream>
 
-GameWindow::GameWindow(int width, int height, const std::string title) : width(width), height(height), title(title), pWindow(nullptr) {
+GameWindow::GameWindow(int width, int height, const std::string& title)
+    : width(width), height(height), title(title), pWindow(nullptr) {
     initialize();
 }
 
@@ -45,6 +46,7 @@ void GameWindow::initialize() {
         throw std::runtime_error("Failed to initialize GLFW");
     }
     pWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+    glfwSwapInterval(1); // Enable V-Sync
     if (!pWindow) {
         glfwTerminate();
         throw std::runtime_error("Failed to create GLFW window");

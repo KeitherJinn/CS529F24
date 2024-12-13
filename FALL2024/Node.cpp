@@ -74,7 +74,7 @@ void Node::removeNode(Node::SharedNode node)
     // foundNode will be automatically destroyed here.
 }
 
-void Node::reparent(SharedNode dstNode) {
+void Node::reparent(SharedNode dstNode){
     //auto thisNode = shared_from_this(); // sasafe usage of 'this'
 
     Node* parent = getParent();
@@ -88,6 +88,21 @@ void Node::reparent(SharedNode dstNode) {
 }
 
 void Node::update(float deltaTime) {
+
+    /*if (parent) {
+        localTransform.setPosition(parent->getLocalPosition() + localTransform.getPosition());
+        localTransform.setRotation(parent->getLocalRotation() + localTransform.getRotation());
+        localTransform.setScale(parent->getLocalScale() * localTransform.getScale());
+
+        worldTransform.setPosition(parent->getTransformMatrix() * localTransform.getPosition());
+        worldTransform.setRotation(parent->worldTransform.getRotation() + localTransform.getRotation());
+        worldTransform.setScale(parent->worldTransform.getScale() * localTransform.getScale());
+
+    }*/
+    
+
+
+
 
     if (isLocalSpace) {
         if (parent) {

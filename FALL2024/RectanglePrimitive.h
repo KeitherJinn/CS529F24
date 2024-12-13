@@ -12,6 +12,7 @@ public:
     auto getGeometryBuffer() { return mesh ? mesh->getGeometryBuffer() : nullptr; }
 
 private:
+
     void createMesh();
     void createMaterial();
 };

@@ -9,8 +9,8 @@
 #include "Vector3.h"
 #include "Matrix4.h"
 
-class Shader;
-class Texture;
+#include "Shader.h"
+#include "Texture.h"
 
 class Material {
 public:
@@ -43,7 +43,7 @@ private:
         std::shared_ptr<Texture> texture;
         unsigned int unit;
     };
-
+    
     // Optional texture data
     // No memory is allocated if we decide for a texture-less material / renderable node
     std::optional<std::unordered_map<std::string, TextureInfo>> textureData;

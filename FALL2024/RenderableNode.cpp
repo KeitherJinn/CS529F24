@@ -1,7 +1,9 @@
 // RenderableNode.cpp
 #include "RenderableNode.h"
 
-RenderableNode::RenderableNode(const std::string& name, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material, Renderer* renderer) : Node(name), mesh(mesh), material(material), isVisible(true), renderer(renderer) {}
+RenderableNode::RenderableNode(const std::string& name, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material,
+    Renderer* renderer)
+    : Node(name), mesh(mesh), material(material), isVisible(true), renderer(renderer) {}
 
 
 void RenderableNode::update(float deltaTime) {

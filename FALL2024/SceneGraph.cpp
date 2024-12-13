@@ -38,13 +38,13 @@ void SceneGraph::update(float deltaTime) {
     root->update(deltaTime);
 }
 
-void SceneGraph::draw(const Matrix4& view, const Matrix4& projection) const {
+void SceneGraph::draw(const Matrix4& view, const Matrix4& projection) const{
     drawNode(root, view, projection);
 }
 
-void SceneGraph::drawNode(const std::shared_ptr<Node>& node, const Matrix4& view, const Matrix4& projection) const {
+void SceneGraph::drawNode(const std::shared_ptr<Node>& node, const Matrix4& view, const Matrix4& projection) const{
     // Try to cast to RenderableNode
-    auto renderableNode = static_cast<RenderableNode*>(node.get());
+    auto renderableNode = dynamic_cast<RenderableNode*>(node.get());
     if (renderableNode != nullptr) {
         renderableNode->draw(const_cast<Matrix4&>(view), const_cast<Matrix4&>(projection));
     }

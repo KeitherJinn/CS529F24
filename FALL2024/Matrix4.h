@@ -13,6 +13,15 @@ private:
 public:
     Matrix4();
 
+    /*float& operator()(int row, int col) {
+        return data[row][col];
+    }*/
+
+    /*float operator()(int row, int col) const {
+        return data[row][col];
+    }*/
+
+
     // Multiplication: * Operator Overloads
     Matrix4 operator*(const Matrix4& other);
     Vector3 operator*(const Vector3& vec) const;
@@ -39,4 +48,6 @@ public:
         float near, float far);
     static Matrix4 lookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
     // I encourage to implement the Euler Angles formula: Removes the gimball lock problem
+
+
 };

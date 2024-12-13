@@ -10,10 +10,10 @@ class Node : public std::enable_shared_from_this<Node> {
 protected:
     // aliases for code clarity
     using ChildrenContainer = std::vector<std::shared_ptr<Node>>;
-    using SharedNode = std::shared_ptr<Node>;
+    using SharedNode        = std::shared_ptr<Node>;
 
     unsigned int        siblingNumber;
-    Node* parent;
+    Node*               parent;
     ChildrenContainer   children;
     std::string         name;
 
@@ -40,7 +40,7 @@ public:
     SharedNode      findNodeFast(SharedNode node);
 
     // Getter methods
-    Node* getParent()    const { return parent; }
+    Node*                    getParent()    const { return parent; }
     const ChildrenContainer& getChildren()  const { return children; }
     std::string              getName()      const { return name; };
 
@@ -52,9 +52,13 @@ public:
     Vector3 getLocalPosition() const;
     Vector3 getLocalRotation() const;
     Vector3 getLocalScale() const;
+    
+    
 
     // Get the Matrix of whatever this node is
     void worldToLocalSpace();
     void localToWorldSpace();
     Matrix4 getTransformMatrix();
+
+    
 };

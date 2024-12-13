@@ -1,5 +1,5 @@
 #pragma once
-#include <glew.h>
+#include <gl/glew.h>
 #include <vector>
 #include <unordered_map>
 #include <memory>
@@ -53,18 +53,19 @@ public:
     // Getters
     GLsizei             getVertexCount() const { return vertexCount; }
     GLsizei             getIndexCount() const { return indexCount; }
-    const std::string& getName() const { return name; }
+    const std::string&  getName() const { return name; }
 
     // Utility methods
     bool    hasAttribute(Attribute attr) const;
-    GLuint  getVAO() const { return vao; }
-    GLuint  getVBO() const { return vbo; }
-    GLuint  getEBO() const { return ebo; }
+    auto    getIndexData()  const { return indexData; }
+    GLuint  getVAO()        const { return vao; }
+    GLuint  getVBO()        const { return vbo; }
+    GLuint  getEBO()        const { return ebo; }
 
 private:
     GeometryBuffer(const std::string& name);
 
-    void initializeBuffers(
+    void initializeBuffers( 
         const std::unordered_map<Attribute, std::pair<std::vector<float>, AttributeInfo>>& attributeData,
         const std::vector<unsigned int>& indices);
     void cleanupBuffers();
@@ -75,4 +76,5 @@ private:
     std::unordered_map<Attribute, GLuint> attributeOffsets; // To track when each attribute starts
     std::unordered_map<Attribute, AttributeInfo> attributeInfos;
     std::string name;  // For debugging and resource management
+    std::vector<unsigned int> indexData;
 };

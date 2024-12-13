@@ -7,7 +7,7 @@ void Transform::setPosition(const Vector3& newPosition) {
     position = newPosition;
 }
 
-Vector3 Transform::getPosition() const {
+const Vector3& Transform::getPosition() const {
     return position;
 }
 
@@ -15,7 +15,7 @@ void Transform::setRotation(const Vector3& newRotation) {
     rotation = newRotation;
 }
 
-Vector3 Transform::getRotation() const {
+const Vector3& Transform::getRotation() const {
     return rotation;
 }
 
@@ -23,7 +23,7 @@ void Transform::setScale(const Vector3& newScale) {
     scaling = newScale;
 }
 
-Vector3 Transform::getScale() const {
+const Vector3& Transform::getScale() const {
     return scaling;
 }
 
@@ -42,7 +42,7 @@ void Transform::scale(const Vector3& scale) {
 }
 
 
-Matrix4 Transform::getLocalMatrix() const {
+Matrix4 Transform::getLocalMatrix(){
     Matrix4 translationMatrix = Matrix4::translation(position.x, position.y, position.z);
     Matrix4 rotationMatrix = Matrix4::rotationXYZ(rotation.x, rotation.y, rotation.z);
     Matrix4 scaleMatrix = Matrix4::scale(scaling.x, scaling.y, scaling.z);

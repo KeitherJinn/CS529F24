@@ -5,6 +5,7 @@ class FramerateController
 public:
 	static constexpr double DEFAULT_FIXED_TIME_STEP = 1.0 / 240.0;
 
+
 public:
 	static FramerateController* GetInstance();
 	~FramerateController() = default;
@@ -53,5 +54,6 @@ private:
 	int targetFrameTime;
 
 	double accumulator;
+
 };
 

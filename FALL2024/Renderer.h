@@ -19,6 +19,8 @@ public:
     void swapBuffers();
 
     GameWindow& getWindowPtr() { return pWindow; }
+    // temp
+    //void drawTriangle(const Vector3 v1, const Vector3 v2, const Vector3 v3, const Matrix4 modelMatrix);
 
 private:
     void initialize();
@@ -26,4 +28,11 @@ private:
     void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
     GameWindow& pWindow;
+
+    // temp
+    /*GLuint shaderProgram;
+    GLuint VAO;
+    GLuint VBO;
+    Matrix4 projectionMatrix;
+    Matrix4 viewMatrix;*/
 };

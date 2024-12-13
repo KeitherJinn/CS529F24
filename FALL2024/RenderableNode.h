@@ -13,9 +13,9 @@ public:
     virtual ~RenderableNode() = default;
 
     // Getters for components
-    const Mesh* getMesh()       const { return mesh.get(); }
-    const Material* getMaterial()   const { return material.get(); }
-
+    const Mesh*         getMesh()       const { return mesh.get(); }
+    const Material*     getMaterial()   const { return material.get(); }   
+    
     // Update function (overrides Node::update)
     void update(float deltaTime) override;
 
