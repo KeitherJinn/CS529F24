@@ -100,10 +100,6 @@ void Node::update(float deltaTime) {
 
     }*/
     
-
-
-
-
     if (isLocalSpace) {
         if (parent) {
             Matrix4 parentWorld = parent->getTransformMatrix();

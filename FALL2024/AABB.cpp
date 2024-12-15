@@ -4,21 +4,19 @@
 AABB::AABB( const Vector3& min,
             const Vector3& max)
     : localMin(min), localMax(max),
-    worldMin(min), worldMax(max) {}
+    worldMin(min), worldMax(max) {
+    // For 2D AABB, we only need 4 corners
+    corners[0] = Vector3(localMin.x, localMin.y, 0.0f); // Bottom-left
+    corners[1] = Vector3(localMax.x, localMin.y, 0.0f); // Bottom-right
+    corners[2] = Vector3(localMin.x, localMax.y, 0.0f); // Top-left
+    corners[3] = Vector3(localMax.x, localMax.y, 0.0f);  // Top-right
+}
 
 Shape::Type AABB::getType() const { 
     return Type::AABB; 
 }
 
 void AABB::update(Transform& transform){
-    // For 2D AABB, we only need 4 corners
-    Vector3 corners[4] = {
-        Vector3(localMin.x, localMin.y, 0.0f), // Bottom-left
-        Vector3(localMax.x, localMin.y, 0.0f), // Bottom-right
-        Vector3(localMin.x, localMax.y, 0.0f), // Top-left
-        Vector3(localMax.x, localMax.y, 0.0f)  // Top-right
-    };
-
     // Get the transform matrix once
     Matrix4 transformMatrix = transform.getLocalMatrix();
 
@@ -31,6 +29,9 @@ void AABB::update(Transform& transform){
         worldMax.x = std::max(worldMax.x, transformed.x);
         worldMax.y = std::max(worldMax.y, transformed.y);
     }
+
+    std::cout << localMax << localMin << std::endl;
+    std::cout << worldMax << worldMin << std::endl;
 }
 
 // Utility functions

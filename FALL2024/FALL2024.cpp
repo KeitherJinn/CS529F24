@@ -15,7 +15,8 @@
 #include "OBB.h"
 #include "Circle.h"
 #include "PhysicsManager.h"
-
+#include "Tests.h"
+#include "Camera.h"
 
 int main() {
         // Create window, renderer and input systems
@@ -28,25 +29,27 @@ int main() {
         SceneGraph sceneGraph;
 
         // Set up camera (view and projection matrices)
-        Vector3 cameraPos(0.0f, 0.0f, 1.0);
-        Vector3 cameraTarget = cameraPos + Vector3(0.0f, 0.0f, -1.0f);
-        Vector3 upVector(0.0f, 1.0f, 0.0f);
-        Matrix4 viewMatrix = Matrix4::lookAt(cameraPos, cameraTarget, upVector);
+        Camera camera;
+        camera.setLocalPosition(Vector3(0.0f, 0.0f, 1.0f));
+        camera.setTarget(Vector3(0.0f, 0.0f, 0.0f));
         float aspectRatio = static_cast<float>(window.getWidth()) / window.getHeight();
         float bottom = -window.getWidth() * 0.5f;
         float top = window.getHeight() * 0.5f;
         float left = -window.getWidth() * 0.5f;
         float right = window.getWidth() * 0.5f;
-        Matrix4 projectionMatrix = Matrix4::orthographic(left, right, bottom, top, 0.1f, 1000.0f);
+        camera.setProjectionMatrix(left, right, top, bottom, aspectRatio);
+
+        Matrix4 projectionMatrix = camera.getProjectionMatrix();
+        Matrix4 viewMatrix = camera.getViewMatrix();
 
         // Drawable objects
         auto box1 = std::make_shared<GameObject>("Icon1", &renderer);
         box1->setLocalPosition(Vector3(-1.0f, 0.0f, 0.0f));
-        box1->setLocalScale(Vector3(100.0f, 100.f, 1.0f));
+        box1->setLocalScale(Vector3(100.0f, 100.0f, 1.0f));
 
         auto box2 = std::make_shared<GameObject>("Icon2", &renderer);
         box2->setLocalPosition(Vector3(1.0f, 0.0f, 0.0f));
-        box2->setLocalScale(Vector3(100.0f, 100.f, 1.0f));
+        box2->setLocalScale(Vector3(100.0f, 100.0f, 1.0f));
 
         sceneGraph.addNode(box1);
         sceneGraph.addNode(box2);
@@ -56,14 +59,14 @@ int main() {
         auto body2 = std::make_unique<PhysicsBody>(box2.get());
 
         // Create OBBs
-        auto shape1 = std::make_shared<OBB>(
+        auto shape1 = std::make_shared<AABB>(
             Vector3(-0.0f, -0.0f, 0.0f),  // half width/height of 50 for 100x100 box
-            Vector3(0.5f, 0.5f, 0.0f));
-        auto shape2 = std::make_shared<OBB>(
+            Vector3(1.0f, 1.0f, 0.0f));
+        auto shape2 = std::make_shared<AABB>(
             Vector3(-0.0f, -0.0f, 0.0f),  // half width/height of 50 for 100x100 box
-            Vector3(0.5f, 0.5f, 0.0f));
-        shape1->initializeDebugDraw(&renderer);
-        shape2->initializeDebugDraw(&renderer);
+            Vector3(1.0f, 1.0f, 0.0f));
+        //shape1->initializeDebugDraw(&renderer);
+        //shape2->initializeDebugDraw(&renderer);
 
         // Create AABB shapes
         body1->setShape(shape1);
@@ -75,11 +78,16 @@ int main() {
         
 
         float angle = 0.0f;
-        float speed = 10.0f;
+        float speed = 1.0f;
         float deltaTime = 0.0f;
         int expectedFrameRate = 60; // 1000;
         framerateController->SetTargetFramerate(expectedFrameRate);
 
+        //testRotationMatrices();
+        //testMatrixMultiplication();
+        //testVectorTransformation();
+        //testTranslationMatrix();
+        //testScaleMatrix();
         
         while (!window.shouldClose()) {
 

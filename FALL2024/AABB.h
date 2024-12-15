@@ -23,6 +23,6 @@ public:
 private:
 	Vector3 localMin, localMax;   // Original bounds in local space
 	Vector3 worldMin, worldMax;   // Transformed bounds in world space
-
+	Vector3 corners[4];
 };
 

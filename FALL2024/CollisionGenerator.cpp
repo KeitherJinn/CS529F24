@@ -36,11 +36,14 @@ bool CollisionGenerator::AABBvsAABB(const Shape* a, const Shape* b, Contact& con
     Vector3 min2 = aabb2->getMin();
     Vector3 max2 = aabb2->getMax();
 
-    if (max1.x < min2.x || min1.x > max2.y) return false;
-    if (max1.y < min2.y || min1.y > max2.y) return false;
+    if (max1.x >= min2.x && min1.x <= max2.x) {
+        if (max1.y >= min2.y && min1.y <= max2.y) {
+            contact.point = (aabb1->getCenter() + aabb2->getCenter()) * 0.5f;
+            return true;
+        }
+    }
 
-    contact.point = (aabb1->getCenter() + aabb2->getCenter()) * 0.5f;
-    return true;
+    return false;
 }
 
 bool CollisionGenerator::OBBvsOBB(const Shape* a, const Shape* b, Contact& contact) {
