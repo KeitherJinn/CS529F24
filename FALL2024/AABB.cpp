@@ -29,9 +29,6 @@ void AABB::update(Transform& transform){
         worldMax.x = std::max(worldMax.x, transformed.x);
         worldMax.y = std::max(worldMax.y, transformed.y);
     }
-
-    std::cout << localMax << localMin << std::endl;
-    std::cout << worldMax << worldMin << std::endl;
 }
 
 // Utility functions

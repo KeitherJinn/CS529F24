@@ -5,12 +5,11 @@
 
 class CollisionListener : public EventListener<CollisionEvent> {
 public:
-
 	using CollisionCallback = std::function<void(RenderableNode*, RenderableNode*)>;
 
 	CollisionListener(RenderableNode* owner);
 
-	void OnEvent(const CollisionEvent& event) override;
+	void OnEvent(const CollisionEvent& event);
 
 	void setCallback(CollisionCallback callback) {}
 

@@ -66,6 +66,13 @@ Vector3 Vector3::reciprocal() const
     );
 }
 
+bool Vector3::operator==(const Vector3& other) const {
+    if (this->x == other.x && this->y == other.y && this->z == other.z) {
+        return true;
+    }
+    else return false;
+}
+
 std::ostream& operator<<(std::ostream& os, const Vector3& v) {
     os << std::fixed << std::setprecision(2) << "(" << v.x << ", " << v.y << ", " << v.z << ")";
     return os;

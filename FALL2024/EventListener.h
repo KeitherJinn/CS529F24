@@ -25,7 +25,7 @@ public:
     void RegisterListener();
 
     // Pure virtual function to be implemented by derived classes
-    virtual void OnEvent(const T& event) = 0;
+    virtual void OnEvent(const T& event) {};
 
     // Implementation of IEventListener interface
     void HandleEvent(const Event& event) override;

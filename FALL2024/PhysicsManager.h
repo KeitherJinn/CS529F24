@@ -10,7 +10,7 @@ public:
     static PhysicsManager& Instance();
 
     void removeBody(PhysicsBody* body);
-    void update(float deltatime);
+    bool update(float deltatime);
     void addBody(PhysicsBody* body);
 
     const std::vector<PhysicsBody*>& getBodies() const { return bodies; }
@@ -20,7 +20,7 @@ private:
     PhysicsManager(const PhysicsManager&) = delete;
     PhysicsManager& operator=(const PhysicsManager&) = delete;
 
-    void checkCollisions();
+    bool checkCollisions();
 
     std::vector<PhysicsBody*> bodies;
     CollisionGenerator collisionGenerator;

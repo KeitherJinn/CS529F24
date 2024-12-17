@@ -4,10 +4,19 @@
 using Key = unsigned int;           // 4 bytes
 
 // move WSAD and space              // 4 * 6 = 24 bytes
-constexpr Key k_W       = 87;       
+constexpr Key k_W       = 87;
+constexpr Key k_Y       = 89;
+constexpr Key k_O       = 79;
+constexpr Key k_P       = 80;
+constexpr Key k_Q       = 81;
+constexpr Key k_R       = 82;
 constexpr Key k_S       = 83;
+constexpr Key k_T       = 84;
+constexpr Key k_U       = 85;
 constexpr Key k_A       = 65;
 constexpr Key k_D       = 68;
+constexpr Key k_E       = 69;
+constexpr Key k_I       = 73;
 constexpr Key k_SPACE   = 32;
 constexpr Key K_ESCAPE  = 256;
 

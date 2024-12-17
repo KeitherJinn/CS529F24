@@ -13,11 +13,6 @@ private:
         RootNode() : Node("Root") {}
         ~RootNode() override = default;
 
-        // Prevent removal of the root node
-        void removeNode(SharedNode node) override {
-            throw std::runtime_error("Cannot remove the root node");
-        }
-
         // Prevent reparenting of the root node
         void reparent(SharedNode node) override {
             throw std::runtime_error("Cannot reparent the root node");
@@ -32,9 +27,6 @@ private:
         }
 
     };
-
-    std::shared_ptr<RootNode> root;  // Root node of the scene graph
-    
     void drawNode(const std::shared_ptr<Node>& node, const Matrix4& view, const Matrix4& projection) const;
 
 public:
@@ -58,7 +50,7 @@ public:
     // Draw the entire scene graph if and only if Node is an instance of RenderableNode
     void draw(const Matrix4& view, const Matrix4& projection) const;
 
-    
+    std::shared_ptr<RootNode> root;  // Root node of the scene graph
 
     // inline functions to get data from root, if needed
     // Root node transform getters

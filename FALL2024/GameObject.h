@@ -9,8 +9,8 @@
 class GameObject : public RectanglePrimitive
 {
 public:
-	GameObject(const std::string name, Renderer* renderer)
-		: RectanglePrimitive(name, renderer) {
+	GameObject(const std::string name, Renderer* renderer, std::string tex = "ImgTexture120_100.bmp")
+		: RectanglePrimitive(name, renderer, tex) {
 
         // Register GameObject in the list of collision listeners
         collisionListener = new CollisionListener(this);
@@ -25,13 +25,10 @@ public:
         delete collisionListener;
     }
 
-    void update(float deltaTime) override {
+    virtual void update(float deltaTime) override {
         //std::cout << "Position of " << this->getName() << " is: " << this->getLocalPosition() << std::endl;
         RenderableNode::update(deltaTime);
     }
 
-
-private:
 	CollisionListener* collisionListener;
-
 };

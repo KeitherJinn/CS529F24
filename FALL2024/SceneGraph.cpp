@@ -20,6 +20,7 @@ void SceneGraph::addNode(std::shared_ptr<Node> node) {
 // Removes a node from the scene graph
 void SceneGraph::removeNode(std::shared_ptr<Node> node) {
     if (!node) {
+        // Prevent removal of the root node
         throw std::invalid_argument("Cannot remove null node from scene graph");
     }
     if (node == root) {

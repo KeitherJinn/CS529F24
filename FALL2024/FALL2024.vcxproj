@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Catches.h" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CollisionGenerator.cpp" />
     <ClCompile Include="CollisionListener.cpp" />
@@ -163,6 +164,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Keys.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CollisionEvent.h" />

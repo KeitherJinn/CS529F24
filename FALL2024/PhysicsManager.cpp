@@ -20,15 +20,17 @@ void PhysicsManager::addBody(PhysicsBody* body) {
     }
 }
 
-void PhysicsManager::update(float deltatime) {
+bool PhysicsManager::update(float deltatime) {
     for (auto body : bodies) {
         body->integrate(deltatime);
     }
-    checkCollisions();
+    bool res = checkCollisions();
+    return res;
 }
 
-void PhysicsManager::checkCollisions() {
+bool PhysicsManager::checkCollisions() {
     Contact contact;
+    bool sign = false;
     for (size_t i = 0; i < bodies.size(); i++) {
         for (size_t j = i + 1; j < bodies.size(); j++) {
             if (collisionGenerator.generateContact(bodies[i], bodies[j], contact)) {
@@ -38,7 +40,9 @@ void PhysicsManager::checkCollisions() {
                     contact.bodies[1]->getOwner()
                     );
                 EventManager::Instance().BroadcastEvent(event);
+                sign = true;
             }
         }
     }
+    return sign;
 }

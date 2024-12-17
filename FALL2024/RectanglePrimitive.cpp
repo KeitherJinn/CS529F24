@@ -2,19 +2,19 @@
 
 RectanglePrimitive::RectanglePrimitive(const std::string name,
     std::shared_ptr<GeometryBuffer>& geometryBuffer,
-    Renderer* renderer)
+    Renderer* renderer, std::string tex)
     : RenderableNode(name, nullptr, nullptr, renderer)
 {
     mesh = std::make_shared<Mesh>(getName() + "_Mesh");
     mesh->setVertexData(geometryBuffer);
-    createMaterial();
+    createMaterial(tex);
 }
 
-RectanglePrimitive::RectanglePrimitive(const std::string name, Renderer* renderer)
+RectanglePrimitive::RectanglePrimitive(const std::string name, Renderer* renderer, std::string tex)
     : RenderableNode(name, nullptr, nullptr, renderer)
 {
     createMesh();
-    createMaterial();
+    createMaterial(tex);
 }
 
 void RectanglePrimitive::createMesh()
@@ -44,11 +44,11 @@ void RectanglePrimitive::createMesh()
 
 }
 
-void RectanglePrimitive::createMaterial()
+void RectanglePrimitive::createMaterial(std::string tex)
 {
     auto shader = std::make_shared<Shader>("vertex_shader.glsl\nfragment_shader.glsl");
     material = std::make_shared<Material>(shader);
-    std::shared_ptr<Texture> texture = Texture::create("ImgTexture120_100.bmp");
+    std::shared_ptr<Texture> texture = Texture::create(tex);
     material->setTexture("mainTexture", texture, 0);
     material->setProperty("useTexture", 1);
     material->setProperty("isTransparent", 1);
